@@ -181,3 +181,4 @@ std = [
   "risc0-zkp/std",
   "serde/std",
 ]
+soundness = ["risc0-zkp/soundness"]

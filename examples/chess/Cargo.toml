@@ -15,3 +15,4 @@ shakmaty = "0.22"
 cuda = ["risc0-zkvm/cuda"]
 default = []
 metal = ["risc0-zkvm/metal"]
+soundness = ["risc0-zkvm/soundness"]

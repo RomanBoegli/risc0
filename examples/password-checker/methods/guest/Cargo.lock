@@ -300,6 +300,7 @@ dependencies = [
  "bytemuck",
  "digest",
  "hex",
+ "libm",
  "log",
  "paste",
  "rand_core",

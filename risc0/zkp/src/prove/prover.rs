@@ -345,7 +345,10 @@ impl<'a, H: Hal> Prover<'a, H> {
 
         // Finally do the FRI protocol to prove the degree of the polynomial
         self.hal.batch_bit_reverse(&final_poly_coeffs, ext_size);
-        log::debug!("FRI-proof, size = {}", final_poly_coeffs.size() / ext_size);
+        log::debug!(
+            "*****FRI-proof, size = {}",
+            final_poly_coeffs.size() / ext_size
+        );
 
         fri_prove(self.hal, &mut self.iop, &final_poly_coeffs, |iop, idx| {
             for pg in self.groups.iter() {
@@ -355,9 +358,20 @@ impl<'a, H: Hal> Prover<'a, H> {
             check_group.merkle.prove(self.hal, iop, idx);
         });
 
+        let proven_soundness_error =
+            super::soundness::proven::<H>(self.taps, final_poly_coeffs.size());
+        log::debug!("proven_soundness_error: {:?}", proven_soundness_error);
+
+        let conjectured_soundness_error =
+            super::soundness::conjectured::<H>(self.taps, final_poly_coeffs.size());
+        log::debug!(
+            "conjectured_soundness_error: {:?}",
+            conjectured_soundness_error
+        );
+
         // Return final proof
         let proof = self.iop.proof;
-        log::debug!("Proof size = {}", proof.len());
+        log::debug!("****Proof size = {}", proof.len());
         proof
     }
 }

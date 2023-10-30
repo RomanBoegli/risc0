@@ -3302,6 +3302,7 @@ dependencies = [
  "ff",
  "hex",
  "lazy_static",
+ "libm",
  "log",
  "metal",
  "ndarray",
