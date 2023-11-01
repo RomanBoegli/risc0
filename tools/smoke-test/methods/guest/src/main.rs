@@ -12,20 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#![doc = include_str!("../README.md")]
-#![deny(missing_docs)]
+#![no_main]
+#![no_std]
 
-/// Bonsai Alpha SDK
-pub mod alpha;
-#[cfg(feature = "async")]
-/// Bonsai Alpha SDK async
-pub mod alpha_async;
+use core::hint::black_box;
+use risc0_zkvm::guest::env;
 
-/// HTTP header key for the API key
-pub const API_KEY_HEADER: &str = "x-api-key";
-/// HTTP header for the risc0 version string
-pub const VERSION_HEADER: &str = "x-risc0-version";
-/// Environment variable name for the API url
-pub const API_URL_ENVVAR: &str = "BONSAI_API_URL";
-/// Environment variable name for the API key
-pub const API_KEY_ENVVAR: &str = "BONSAI_API_KEY";
+risc0_zkvm::guest::entry!(main);
+
+pub fn main() {
+    let iterations: u32 = env::read();
+
+    let mut sum = 0;
+    for _ in 0..iterations {
+        black_box(sum += 1);
+    }
+
+    env::commit(&sum);
+}
